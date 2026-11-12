@@ -2,6 +2,6 @@
 
 #define COMANDOS_CLI_H
 
-int comando_cat(const char *nome_arquivo);
+int cat(int contagem_argumentos, char *vetor_argumentos[]);
 
 #endif
