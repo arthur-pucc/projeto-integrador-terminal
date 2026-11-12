@@ -20,8 +20,8 @@ Ele lê as linhas que o usuário digitar, executando os comandos contemplados pe
 
 ```console
 git clone https://github.com/arthur-pucc/projeto-integrador-terminal.git
-cd projeto-integrador-terminal
-gcc terminal_main.c comando_cat.c -o programa.exe
+cd projeto-integrador-terminal/src
+gcc main.c parser.c comando_cat.c -o programa.exe
 ```
 
 
