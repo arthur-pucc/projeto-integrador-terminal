@@ -1,28 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-void cat(char nomeArquivo[])
+void sair(void)
 {
-    FILE *arquivo;
-    int caractere;
+    printf("Tchau!\n");
 
-    if(nomeArquivo [0] == '\0'){
-        printf("Uso: cat <arquivo>\n");
-        return;
-    }
-
-    arquivo = fopen(nomeArquivo, "r");
-    if (arquivo == NULL){
-        printf("arquivo naoo encontrado\n");
-        return;
-    }
-
-    while ((caractere = fgetc(arquivo)) != EOF){
-        putchar(caractere);
-    }
-
-    if(ferror(arquivo)){
-        printf("Erro ao ler o arquivo.\n");
-    }
-
-    fclose(arquivo);
+    exit(EXIT_SUCCESS);
 }
