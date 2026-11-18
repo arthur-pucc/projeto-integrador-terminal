@@ -23,6 +23,8 @@ int main() {
             cesar(contagem_argumentos, vetor_argumentos);
         } else if (strcmp(vetor_argumentos[0], "sair") == 0) {
             sair();
+        } else if (strcmp(vetor_argumentos[0], "criar") == 0) {
+            criar(contagem_argumentos, vetor_argumentos);
         }
     }
 }
