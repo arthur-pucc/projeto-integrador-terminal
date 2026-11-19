@@ -11,8 +11,8 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     char *conteudo = vetor_argumentos[3]; // Traz o texto a ser transformado ou o nome do arquivo para transformar
     int deslocamento = converterStringParaInt(vetor_argumentos[4]);
 
-    if (contagem_argumentos > 5) {
-        printf("Quantidade de argumentos excedida.");
+    if (contagem_argumentos != 5) {
+        printf("Quantidade de argumentos invalida.");
         return EXIT_FAILURE;
     }
     
