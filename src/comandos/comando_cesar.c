@@ -7,8 +7,8 @@ static int converterStringParaInt(char *numero);
 
 int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     const char *modo = vetor_argumentos[1]; // Aceita APENAS cifrar/decifrar.
-    const char tipo = vetor_argumentos[2][1]; // Aceita APENAS -t/-f. // Acessa ultimo caractere (o [1]) para facilitar comparação (evita usar a funcao strcmp)
-    char *conteudo = vetor_argumentos[3];
+    const char *tipo = vetor_argumentos[2]; // Aceita APENAS -t/-f.
+    char *conteudo = vetor_argumentos[3]; // Traz o texto a ser transformado ou o nome do arquivo para transformar
     int deslocamento = converterStringParaInt(vetor_argumentos[4]);
 
     if (contagem_argumentos > 5) {
@@ -29,7 +29,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         return EXIT_FAILURE;
     }
 
-    if (tipo == 't') {
+    if (strcmp(tipo, "-t") == 0) {
         int i = 0;
         
         while (conteudo[i] != '\0') {
@@ -38,7 +38,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         }
 
         printf("%s\n", conteudo);
-    } else if (tipo == 'f') { // Aqui, 'conteudo' é o NOME do arquivo que será lido.
+    } else if (strcmp(tipo, "-f") == 0) { // Aqui, 'conteudo' é o NOME do arquivo que será lido.
         FILE *arquivo_origem = fopen(conteudo, "r");
 
         if (arquivo_origem == NULL) {
@@ -78,7 +78,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
 
         printf("Arquivo %s criado!\n", nome_arquivo_destino);
     } else {
-        printf("Argumento invalido");
+        printf("Argumento invalido.\n");
         return EXIT_FAILURE;
     }
 
