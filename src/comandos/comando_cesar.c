@@ -102,12 +102,16 @@ static int deslocar(char caractere, int deslocamento) {
 
 static int converterStringParaInt(char *numero) {
     int i = 0;
-
     int numero_convertido = 0;
 
     while (numero[i] != '\0') {
         const int digito = numero[i];
         
+        if (digito < '0' || digito > '9') {
+            printf("Parametro nao e um numero valido.\n");
+            return EXIT_FAILURE;
+        }
+
         numero_convertido = numero_convertido * 10;
         numero_convertido = numero_convertido + digito - '0';
 
