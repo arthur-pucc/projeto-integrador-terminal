@@ -38,10 +38,47 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         }
 
         printf("%s\n", conteudo);
-    } else if (tipo == 'f') {
-        // funcao para arquivo
+    } else if (tipo == 'f') { // Aqui, 'conteudo' é o NOME do arquivo que será lido.
+        FILE *arquivo_origem = fopen(conteudo, "r");
+
+        if (arquivo_origem == NULL) {
+            perror("Erro ao tentar ler arquivo.");
+            return EXIT_FAILURE;
+        }
+
+        char caractere;
+        char *nome_arquivo_destino;
+                
+        if (strcmp(modo, "cifrar") == 0) {
+            nome_arquivo_destino = strcat(conteudo, ".cifrado");
+        } else {
+            nome_arquivo_destino = strcat(conteudo, ".decifrado");
+        }
+
+        FILE *arquivo_destino = fopen(nome_arquivo_destino, "w");
+
+        if (arquivo_destino == NULL) {
+            perror("Erro ao tentar criar arquivo cifrado/decifrado.");
+            return EXIT_FAILURE;
+        }
+        
+        while ((caractere = deslocar(fgetc(arquivo_origem), deslocamento)) != EOF) {
+            fputc(caractere, arquivo_destino);
+        }
+
+        if (fclose(arquivo_origem) != 0) {
+            perror("Erro ao fechar arquivo origem.");
+            return EXIT_FAILURE;
+        }
+
+        if (fclose(arquivo_destino) != 0) {
+            perror("Erro ao fechar arquivo destino.");
+            return EXIT_FAILURE;
+        }
+
+        printf("Arquivo %s criado!\n", nome_arquivo_destino);
     } else {
-        perror("Argumento invalido");
+        printf("Argumento invalido");
         return EXIT_FAILURE;
     }
 
