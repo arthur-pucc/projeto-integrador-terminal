@@ -46,9 +46,9 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
             return EXIT_FAILURE;
         }
 
-        char caractere;
+        int caractere;
         char *nome_arquivo_destino;
-                
+        
         if (strcmp(modo, "cifrar") == 0) {
             nome_arquivo_destino = strcat(conteudo, ".cifrado");
         } else {
