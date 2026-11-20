@@ -10,7 +10,7 @@
 int main() {
     while (1) {
         char *vetor_argumentos[MAX_ARGUMENTS];
-        char *comando;
+        char comando[MAX_SIZE];
 
         fgets(comando, MAX_SIZE, stdin);
 
