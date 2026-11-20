@@ -58,8 +58,14 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         FILE *arquivo_destino = fopen(nome_arquivo_destino, "w");
 
         if (arquivo_destino == NULL) {
-            perror("Erro ao tentar criar arquivo cifrado/decifrado.");
-            return EXIT_FAILURE;
+            if (strcmp(modo, "cifrar") == 0) {
+                perror("Erro ao tentar criar arquivo cifrado.");
+                return EXIT_FAILURE;
+            } else {
+                perror("Erro ao tentar criar arquivo decifrado.");
+                return EXIT_FAILURE;
+
+            }
         }
         
         while ((caractere = deslocar(fgetc(arquivo_origem), deslocamento)) != EOF) {
