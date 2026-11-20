@@ -74,7 +74,7 @@ A partir de agora, o terminal escuta os comandos digitados pelo usuário até o 
 
 1. `main.c` lê o que o usuário digitou com `fgets`.
 2. `separarArgumentos()` (em `parser.c`) quebra a linha nos espaços, respeitando o que está entre aspas, guarda um ponteiro para cada termo em `vetor_argumentos` e retorna quantos termos encontrou.
-3. `main.c` compara o primeiro termo (`vetor_argumentos[0]`) com o nome de cada comando e chama `escolherFuncao`, responsavel por apontar a função correspondente, passando `(contagem_argumentos, vetor_argumentos)`.
+3. `main.c` chama a funcao `escolherComando()`, o qual compara o primeiro termo (`vetor_argumentos[0]`) com o nome de cada comando, apontado e chamando a função correspondente, passando `(contagem_argumentos, vetor_argumentos)`.
 4. Cada comando valida os próprios argumentos, executa a ação e devolve `EXIT_SUCCESS` ou `EXIT_FAILURE`.
 
 
@@ -224,4 +224,4 @@ Arquivo meu_arquivo.txt.cifrado.decifrado criado!
 * Deslocamento indicado não é um número válido retorna **Parametro nao e um numero valido**.
 * Tipo diferente de `-t` e `-f` retorna **Argumento invalido.**
 * Arquivo de entrada (tipo `-f`) inexistente retorna **Erro ao tentar ler arquivo**.
-* Falha inesperada ao criar o arquivo `.cifrado` retorna **Erro ao tentar criar arquivo decifrado**.
+* Falha inesperada ao criar o arquivo `.decifrado` retorna **Erro ao tentar criar arquivo decifrado**.
