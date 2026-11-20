@@ -3,13 +3,6 @@
 #include <string.h>
 
 int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
-    char *comando = vetor_argumentos[1];
-
-    if (contagem_argumentos > 2 && !(strcmp(comando, "cesar") == 0 && contagem_argumentos == 3)) {
-        printf("Quantidade de argumentos excedida.\n");
-        return EXIT_FAILURE;
-    }
-
     if (contagem_argumentos == 1) {
         printf("Todos os comandos:\n");
         printf("ajuda           - Lista os comandos.\n");
@@ -21,7 +14,17 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("cesar decifrar  - Decifrar texto.\n");
         printf("\nUse ajuda <comando> para ver a sintaxe e um exemplo.\n");
         printf("Exemplo: ajuda cesar\n");
-    } else if (strcmp(comando, "ajuda") == 0) {
+        return EXIT_SUCCESS;
+    }
+
+    char *comando = vetor_argumentos[1];
+
+    if (contagem_argumentos > 2 && !(strcmp(comando, "cesar") == 0 && contagem_argumentos == 3)) {
+        printf("Quantidade de argumentos excedida.\n");
+        return EXIT_FAILURE;
+    }
+
+    if (strcmp(comando, "ajuda") == 0) {
         printf("Lista todos os comandos.\n");
         printf("Sintaxe: ajuda <comando>\n");
         printf("Exmplo: ajuda cat\n");
