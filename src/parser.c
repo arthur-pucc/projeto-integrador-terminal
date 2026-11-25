@@ -21,7 +21,7 @@ int separarArgumentos(char *comando, char *vetor_argumentos[], int qtde_argument
 
         if (comando[i] == '\0') break; // Acaba ao final da string principal do comando
         
-        while (comando[i] == ' ') continue; // Ignora espaços seguidos
+        while (comando[i] == ' ') i++; // Ignora espaços seguidos
         
         switch (comando[i]) {
             case '"': // Delimitador na "
