@@ -8,26 +8,29 @@ int criar(int contagem_argumentos, char *vetor_argumentos[]) {
         return EXIT_FAILURE;
     }
 
-    if (strchr(vetor_argumentos[1], '/') != NULL || strchr(vetor_argumentos[1], '\\') != NULL) {
+    char *nome_arquivo = vetor_argumentos[1];
+    char *conteudo = vetor_argumentos[2];
+
+    if (strchr(nome_arquivo, '/') != NULL || strchr(nome_arquivo, '\\') != NULL) {
         printf("Nome do arquivo invalido. Nao deve conter '/' ou '\\'.\n");
         return EXIT_FAILURE;
     }
 
-    FILE *arq = fopen(vetor_argumentos[1], "w");
+    FILE *arq = fopen(nome_arquivo, "w");
 
     if (arq == NULL) {
-        perror(strcat("Erro ao criar arquivo '", strcat(vetor_argumentos[1], "'.")));
+        perror(strcat("Erro ao criar arquivo '", strcat(nome_arquivo, "'.")));
         return EXIT_FAILURE;
     }
 
-    fprintf(arq, "%s", vetor_argumentos[2]);
+    fprintf(arq, "%s", conteudo);
 
     if (fclose(arq) != 0) {
-        perror(strcat("Erro ao fechar '", strcat(vetor_argumentos[1], "'.")));
+        perror(strcat("Erro ao fechar '", strcat(nome_arquivo, "'.")));
         return EXIT_FAILURE;
     }
 
-    printf("Arquivo '%s' criado!\n", vetor_argumentos[1]);
+    printf("Arquivo '%s' criado!\n", nome_arquivo);
 
     return EXIT_SUCCESS;
 }
