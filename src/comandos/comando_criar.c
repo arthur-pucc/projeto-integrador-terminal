@@ -7,11 +7,11 @@ int criar(int contagem_argumentos, char *vetor_argumentos[]) {
     if (contagem_argumentos > 3) {
         fprintf(stderr, "criar: quantidade de argumentos excedida\n");
         fprintf(stderr, "Textos com espacos devem ficar entre aspas\n");
-        fprintf(stderr, "Uso: criar <nome_arquivo> <texto>\n");
+        fprintf(stderr, "Uso: criar <arquivo> <texto>\n");
         return EXIT_FAILURE;
-    } else if (contagem_argumentos < 3) {
+    } else if (contagem_argumentos < 3 || vetor_argumentos[1][0] == '\0') { // vetor_argumentos[1][0] trata string vazia ("")
         fprintf(stderr, "criar: informe o nome do arquivo e o texto\n");
-        fprintf(stderr, "Uso: criar <nome_arquivo> <texto>\n");
+        fprintf(stderr, "Uso: criar <arquivo> <texto>\n");
         return EXIT_FAILURE;
     }
 

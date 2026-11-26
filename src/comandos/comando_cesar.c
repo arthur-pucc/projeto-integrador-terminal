@@ -23,7 +23,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     if (converterStringParaInt(vetor_argumentos[4], &deslocamento) == EXIT_FAILURE) return EXIT_FAILURE;
 
     if (deslocamento < 0 || deslocamento > 25) {
-        fprintf(stderr, "cesar: %d: deslocamento deve ser entre 0 e 25\n", deslocamento);
+        fprintf(stderr, "cesar: %d: deslocamento deve estar entre 0 e 25\n", deslocamento);
         return EXIT_FAILURE;
     }
     
@@ -88,12 +88,12 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
             return EXIT_FAILURE;
         }
 
-        if (fclose(arquivo_destino) != 0) {
+        if (fclose(arquivo_destino != 0) {
             fprintf(stderr, "cesar: %s: nao foi possivel gravar o arquivo: %s\n", nome_arquivo_destino, strerror(errno));
             return EXIT_FAILURE;
         }
 
-        printf("Arquivo '%s' gerado!\n", nome_arquivo_destino);
+        printf("Arquivo '%s' criado!\n", nome_arquivo_destino);
     } else {
         fprintf(stderr, "cesar: %s: argumento invalido\n", tipo);
         fprintf(stderr, "Uso: cesar <cifrar|decifrar> <-t texto | -f arquivo> <deslocamento>\n");
