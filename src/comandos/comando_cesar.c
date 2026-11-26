@@ -88,7 +88,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
             return EXIT_FAILURE;
         }
 
-        if (fclose(arquivo_destino != 0) {
+        if (fclose(arquivo_destino) != 0) {
             fprintf(stderr, "cesar: %s: nao foi possivel gravar o arquivo: %s\n", nome_arquivo_destino, strerror(errno));
             return EXIT_FAILURE;
         }
