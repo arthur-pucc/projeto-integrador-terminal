@@ -24,5 +24,6 @@ int escolherComando(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("Comando invalido.");
         return EXIT_FAILURE;
     }
-
+    
+    return EXIT_SUCCESS;
 }
