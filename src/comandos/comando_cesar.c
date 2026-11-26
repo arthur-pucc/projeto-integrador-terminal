@@ -4,7 +4,7 @@
 #include <errno.h>
 
 static int deslocar(char caractere, int deslocamento);
-static int converterStringParaInt(char *numero);
+static int converterStringParaInt(char *numero, int *resultado);
 
 int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     if (contagem_argumentos != 5) {
@@ -16,7 +16,9 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     const char *modo = vetor_argumentos[1]; // Aceita APENAS cifrar/decifrar.
     const char *tipo = vetor_argumentos[2]; // Aceita APENAS -t/-f.
     char *conteudo = vetor_argumentos[3]; // Traz o texto a ser transformado ou o nome do arquivo para transformar
-    int deslocamento = converterStringParaInt(vetor_argumentos[4]);
+    int deslocamento;
+
+    if (converterStringParaInt(vetor_argumentos[4], &deslocamento) == EXIT_FAILURE) return EXIT_FAILURE;
 
     if (deslocamento < 0 || deslocamento > 25) {
         fprintf(stderr, "cesar: %d: deslocamento deve ser entre 0 e 25\n", deslocamento);
@@ -113,12 +115,12 @@ static int deslocar(char caractere, int deslocamento) {
     return base + ((caractere - base + deslocamento) % 26);
 }
 
-static int converterStringParaInt(char *numero) {
+static int converterStringParaInt(char *numero, int *resultado) {
     int i = 0;
     int numero_convertido = 0;
 
     while (numero[i] != '\0') {
-        if (i == 0 && numero[i] == '-') i++;
+        if (i == 0 && (numero[i] == '-' || numero[i] == '+')) i++;
 
         const int digito = numero[i];
         
@@ -132,8 +134,10 @@ static int converterStringParaInt(char *numero) {
 
         i++;
     }
-    
+
     if (numero[0] == '-') numero_convertido = numero_convertido * -1;
 
-    return numero_convertido;
+    *resultado = numero_convertido;
+    
+    return EXIT_SUCCESS;
 }
