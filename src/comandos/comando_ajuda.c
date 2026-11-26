@@ -14,13 +14,14 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("cesar decifrar  - Decifrar texto.\n");
         printf("\nUse ajuda <comando> para ver a sintaxe e um exemplo.\n");
         printf("Exemplo: ajuda cesar\n");
+
         return EXIT_SUCCESS;
     }
 
     char *comando = vetor_argumentos[1];
 
     if (contagem_argumentos > 2 && !(strcmp(comando, "cesar") == 0 && contagem_argumentos == 3)) {
-        printf("Quantidade de argumentos excedida.\n");
+        fprintf(stderr, "Quantidade de argumentos excedida.\n");
         return EXIT_FAILURE;
     }
 
@@ -28,24 +29,29 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("Lista todos os comandos.\n");
         printf("Sintaxe: ajuda <comando>\n");
         printf("Exmplo: ajuda cat\n");
+
     } else if (strcmp(comando, "sair") == 0) {
         printf("Encerra o terminal.\n");
         printf("Sintaxe: sair\n");
         printf("Exemplo: sair\n");
+
     } else if (strcmp(comando, "ec") == 0) {
         printf("Repete o(s) texto(s) imputado(s).\n");
         printf("Sintaxe: ec <texto> [..texto]\n");
         printf("Exemplo: ec \"ola mundo\"\n");
+
     } else if (strcmp(comando, "criar") == 0) {
         printf("Cria um arquivo com o texto informado.\n");
         printf("Sintaxe: criar <arquivo> <texto>\n");
         printf("    ** Se o arquivo existir, seu conteudo sera substituido.\n");
         printf("    ** O nome deve ser informado sem barra.\n");
         printf("Exemplo: criar msg.txt \"ola mundo\"\n");
+
     } else if (strcmp(comando, "cat") == 0) {
         printf("Concatena o conteudo dos arquivos indicados e demonstra o resultado final na tela.\n");
         printf("Sintaxe: cat <arquivo> [..arquivo]\n");
         printf("Exemplo: cat msg.txt\n");
+
     } else if (strcmp(comando, "cesar") == 0) {
         printf("Cifra ou decifra textos e arquivos com a Cifra de Cesar.\n");
         printf("Sintaxe:\n");
@@ -63,9 +69,10 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("    cesar decifrar -t DEF 3       -> ABC\n");
         printf("    cesar cifrar -f msg.txt 3     -> msg.txt.cifrado\n");
         printf("    cesar decifrar -f msg.txt 3   -> msg.txt.decifrado\n");
+
     } else {
-        printf("Comando desconhecido: %s\n", comando);
-        printf("Digite ajuda para ver todos os comandos disponiveis.\n");
+        fprintf(stderr, "ajuda: comando desconhecido: %s.\n", comando);
+        fprintf(stderr, "Digite 'ajuda' para ver todos os comandos disponiveis.\n");
         return EXIT_FAILURE;
     }
 
