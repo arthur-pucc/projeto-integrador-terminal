@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 static int deslocar(char caractere, int deslocamento);
 static int converterStringParaInt(char *numero);
@@ -12,12 +13,13 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     int deslocamento = converterStringParaInt(vetor_argumentos[4]);
 
     if (contagem_argumentos != 5) {
-        printf("Quantidade de argumentos invalida.");
+        fprintf(stderr, "cesar: quantidade de argumentos invalida\n");
+        fprintf(stderr, "Uso: cesar <cifrar|decifrar> <-t texto | -f arquivo> <deslocamento>\n");
         return EXIT_FAILURE;
     }
     
     if (deslocamento < 0 || deslocamento > 25) {
-        printf("Deslocamento aplicado invalido.");
+        fprintf(stderr, "cesar: %d: deslocamento deve ser entre 0 e 25\n", deslocamento);
         return EXIT_FAILURE;
     }
     
@@ -25,7 +27,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     if (strcmp(modo, "decifrar") == 0) {
         deslocamento = deslocamento * -1;
     } else if (strcmp(modo, "cifrar") != 0) {
-        printf("Comando Invalido");
+        fprintf(stderr, "cesar: %s: modo invalido\n", modo);
         return EXIT_FAILURE;
     }
 
@@ -42,7 +44,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         FILE *arquivo_origem = fopen(conteudo, "r");
 
         if (arquivo_origem == NULL) {
-            perror("Erro ao tentar ler arquivo.");
+            fprintf(stderr, "cesar: %s: nao foi possivel abrir o arquivo: %s\n", conteudo, strerror(errno));
             return EXIT_FAILURE;
         }
 
@@ -58,33 +60,38 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         FILE *arquivo_destino = fopen(nome_arquivo_destino, "w");
 
         if (arquivo_destino == NULL) {
-            if (strcmp(modo, "cifrar") == 0) {
-                perror("Erro ao tentar criar arquivo cifrado.");
-                return EXIT_FAILURE;
-            } else {
-                perror("Erro ao tentar criar arquivo decifrado.");
-                return EXIT_FAILURE;
-
-            }
+            fprintf(stderr, "cesar: %s: nao foi possivel criar o arquivo: %s\n", nome_arquivo_destino, strerror(errno));
+            return EXIT_FAILURE;
         }
         
         while ((caractere = deslocar(fgetc(arquivo_origem), deslocamento)) != EOF) {
             fputc(caractere, arquivo_destino);
         }
+        
+        if (ferror(arquivo_origem)) {
+            fprintf(stderr, "cesar: %s: nao foi possivel ler o arquivo: %s\n", conteudo, strerror(errno));
+            return EXIT_FAILURE;
+        }
+
+        if (ferror(arquivo_destino)) {
+            fprintf(stderr, "cesar: %s: nao foi possivel gravar o aquivo: %s\n", nome_arquivo_destino, strerror(errno));
+            return EXIT_FAILURE;
+        }
 
         if (fclose(arquivo_origem) != 0) {
-            perror("Erro ao fechar arquivo origem.");
+            fprintf(stderr, "cesar: %s: nao foi possivel fechar o arquivo: %s\n", conteudo, strerror(errno));
             return EXIT_FAILURE;
         }
 
         if (fclose(arquivo_destino) != 0) {
-            perror("Erro ao fechar arquivo destino.");
+            fprintf(stderr, "cesar: %s: nao foi possivel gravar o arquivo: %s\n", nome_arquivo_destino, strerror(errno));
             return EXIT_FAILURE;
         }
 
-        printf("Arquivo %s criado!\n", nome_arquivo_destino);
+        printf("Arquivo '%s' gerado!\n", nome_arquivo_destino);
     } else {
-        printf("Argumento invalido.\n");
+        fprintf(stderr, "cesar: %s: argumento invalido\n", tipo);
+        fprintf(stderr, "Argumentos disponiveis: -t texto | -f arquivo\n");
         return EXIT_FAILURE;
     }
 
@@ -114,7 +121,7 @@ static int converterStringParaInt(char *numero) {
         const int digito = numero[i];
         
         if (digito < '0' || digito > '9') {
-            printf("Parametro nao e um numero valido.\n");
+            fprintf(stderr, "cesar: %s: deslocamento nao e um numero valido\n", numero);
             return EXIT_FAILURE;
         }
 

@@ -15,7 +15,7 @@ int main() {
         fgets(comando, MAX_SIZE, stdin);
         
         if (comando == NULL) {
-            printf("Ocorreu um erro inesperado. Favor tente novamente.\n");
+            fprintf(stderr, "terminal: ocorreu um erro inesperado\n");
             continue;
         }
 

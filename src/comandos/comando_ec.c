@@ -3,7 +3,8 @@
 
 int ec(int contagem_argumentos, char *vetor_argumentos[]) {
     if (contagem_argumentos == 1) {
-        printf("Sem texto. Digite algo depois do comando.\n");
+        fprintf(stderr, "ec: informe ao menos um texto\n");
+        fprintf(stderr, "Uso: ec <texto> [texto ...]\n");
         return EXIT_FAILURE;
     }
 

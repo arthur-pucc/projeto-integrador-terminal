@@ -1,10 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 int criar(int contagem_argumentos, char *vetor_argumentos[]) {
     if (contagem_argumentos > 3) {
-        printf("Quantidade de argumentos excedida.\n");
+        fprintf(stderr, "criar: quantidade de argumentos excedida\n");
+        fprintf(stderr, "Textos com espacos devem ficar entre aspas\n");
+        fprintf(stderr, "Uso: criar <nome_arquivo> <texto>\n");
+        return EXIT_FAILURE;
+    } else if (contagem_argumentos < 3) {
+        fprintf(stderr, "criar: informe o nome do arquivo e o texto\n");
+        fprintf(stderr, "Uso: criar <nome_arquivo> <texto>\n");
         return EXIT_FAILURE;
     }
 
@@ -12,21 +19,21 @@ int criar(int contagem_argumentos, char *vetor_argumentos[]) {
     char *conteudo = vetor_argumentos[2];
 
     if (strchr(nome_arquivo, '/') != NULL || strchr(nome_arquivo, '\\') != NULL) {
-        printf("Nome do arquivo invalido. Nao deve conter '/' ou '\\'.\n");
+        fprintf(stderr, "criar: %s: nome do arquivo nao deve conter '/' ou '\\'\n", nome_arquivo);
         return EXIT_FAILURE;
     }
 
     FILE *arq = fopen(nome_arquivo, "w");
 
     if (arq == NULL) {
-        perror(strcat("Erro ao criar arquivo '", strcat(nome_arquivo, "'.")));
+        fprintf(stderr, "criar: %s: nao foi possivel criar o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }
 
     fprintf(arq, "%s", conteudo);
 
     if (fclose(arq) != 0) {
-        perror(strcat("Erro ao fechar '", strcat(nome_arquivo, "'.")));
+        fprintf(stderr, "criar: %s: nao foi possivel gravar o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }
 

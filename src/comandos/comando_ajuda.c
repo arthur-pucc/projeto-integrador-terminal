@@ -21,7 +21,8 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
     char *comando = vetor_argumentos[1];
 
     if (contagem_argumentos > 2 && !(strcmp(comando, "cesar") == 0 && contagem_argumentos == 3)) {
-        fprintf(stderr, "Quantidade de argumentos excedida.\n");
+        fprintf(stderr, "ajuda: informe apenas um comando\n");
+        fprintf(stderr, "Uso: ajuda <comando>\n");
         return EXIT_FAILURE;
     }
 
@@ -71,8 +72,8 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("    cesar decifrar -f msg.txt 3   -> msg.txt.decifrado\n");
 
     } else {
-        fprintf(stderr, "ajuda: comando desconhecido: %s.\n", comando);
-        fprintf(stderr, "Digite 'ajuda' para ver todos os comandos disponiveis.\n");
+        fprintf(stderr, "ajuda: %s: comando desconhecido\n", comando);
+        fprintf(stderr, "Digite 'ajuda' para ver todos os comandos disponiveis\n");
         return EXIT_FAILURE;
     }
 
