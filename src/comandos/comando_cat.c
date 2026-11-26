@@ -14,6 +14,8 @@ int cat(int contagem_argumentos, char *vetor_argumentos[]) {
     }
 
     printf("\n");
+
+    return EXIT_SUCCESS;
 }
 
 static int lerArquivo(const char *nome_arquivo) {
