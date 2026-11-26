@@ -32,6 +32,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         deslocamento = deslocamento * -1;
     } else if (strcmp(modo, "cifrar") != 0) {
         fprintf(stderr, "cesar: %s: modo invalido\n", modo);
+        fprintf(stderr, "Uso: cesar <cifrar|decifrar> <-t texto | -f arquivo> <deslocamento>\n");
         return EXIT_FAILURE;
     }
 
@@ -95,7 +96,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         printf("Arquivo '%s' gerado!\n", nome_arquivo_destino);
     } else {
         fprintf(stderr, "cesar: %s: argumento invalido\n", tipo);
-        fprintf(stderr, "Argumentos disponiveis: -t texto | -f arquivo\n");
+        fprintf(stderr, "Uso: cesar <cifrar|decifrar> <-t texto | -f arquivo> <deslocamento>\n");
         return EXIT_FAILURE;
     }
 
