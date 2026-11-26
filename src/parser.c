@@ -8,9 +8,7 @@
   Retorna justamente a quantidade de argumentos + 1 (o proprio comando, ex: cat, ajuda, etc.) */
 int separarArgumentos(char *comando, char *vetor_argumentos[], int qtde_argumentos_max) {
     int contagem_argumentos = 0;
-
-    comando[strlen(comando) - 1] = '\0';
-    int length = strlen(comando); // Necessário pois strlen() é alterado quando joga '\0' para delimitação
+    int length = strlen(comando); // Mais efetivo pois strlen direto no for seria chamado em toda iteração
 
     // Error Handler pra argumentos além do limite
     for (int i = 0; i < length; i++) {

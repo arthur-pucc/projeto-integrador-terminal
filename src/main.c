@@ -14,6 +14,12 @@ int main() {
 
         fgets(comando, MAX_SIZE, stdin);
 
+        if (comando[0] == '\n') {
+            continue; // Ignora Enters puros, evitando Segmentation Fault com fget vazio
+        } else {
+            comando[strlen(comando) - 1] = '\0';
+        }
+
         int contagem_argumentos = separarArgumentos(comando, vetor_argumentos, MAX_ARGUMENTS);
 
         escolherComando(contagem_argumentos, vetor_argumentos);
