@@ -22,24 +22,24 @@ int cat(int contagem_argumentos, char *vetor_argumentos[]) {
 }
 
 static int lerArquivo(const char *nome_arquivo) {
-    FILE *arq = fopen(nome_arquivo, "r");
+    FILE *arquivo = fopen(nome_arquivo, "r");
 
-    if (arq == NULL) {
+    if (arquivo == NULL) {
         fprintf(stderr, "cat: %s: nao foi possivel abrir o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }
 
     int caractere;
-    while ((caractere = fgetc(arq)) != EOF) {
+    while ((caractere = fgetc(arquivo)) != EOF) {
         printf("%c", caractere);
     }
 
-    if (ferror(arq)) {
+    if (ferror(arquivo)) {
         fprintf(stderr, "cat: %s: nao foi possivel ler o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }
 
-    if (fclose(arq) != 0) {
+    if (fclose(arquivo) != 0) {
         fprintf(stderr, "cat: %s: nao foi possivel fechar o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }

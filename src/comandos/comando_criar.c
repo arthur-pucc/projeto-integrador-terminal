@@ -23,16 +23,16 @@ int criar(int contagem_argumentos, char *vetor_argumentos[]) {
         return EXIT_FAILURE;
     }
 
-    FILE *arq = fopen(nome_arquivo, "w");
+    FILE *arquivo = fopen(nome_arquivo, "w");
 
-    if (arq == NULL) {
+    if (arquivo == NULL) {
         fprintf(stderr, "criar: %s: nao foi possivel criar o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }
 
-    fprintf(arq, "%s", conteudo);
+    fprintf(arquivo, "%s", conteudo);
 
-    if (fclose(arq) != 0) {
+    if (fclose(arquivo) != 0) {
         fprintf(stderr, "criar: %s: nao foi possivel gravar o arquivo: %s\n", nome_arquivo, strerror(errno));
         return EXIT_FAILURE;
     }
