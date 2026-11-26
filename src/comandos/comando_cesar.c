@@ -7,17 +7,17 @@ static int deslocar(char caractere, int deslocamento);
 static int converterStringParaInt(char *numero);
 
 int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
-    const char *modo = vetor_argumentos[1]; // Aceita APENAS cifrar/decifrar.
-    const char *tipo = vetor_argumentos[2]; // Aceita APENAS -t/-f.
-    char *conteudo = vetor_argumentos[3]; // Traz o texto a ser transformado ou o nome do arquivo para transformar
-    int deslocamento = converterStringParaInt(vetor_argumentos[4]);
-
     if (contagem_argumentos != 5) {
         fprintf(stderr, "cesar: quantidade de argumentos invalida\n");
         fprintf(stderr, "Uso: cesar <cifrar|decifrar> <-t texto | -f arquivo> <deslocamento>\n");
         return EXIT_FAILURE;
     }
     
+    const char *modo = vetor_argumentos[1]; // Aceita APENAS cifrar/decifrar.
+    const char *tipo = vetor_argumentos[2]; // Aceita APENAS -t/-f.
+    char *conteudo = vetor_argumentos[3]; // Traz o texto a ser transformado ou o nome do arquivo para transformar
+    int deslocamento = converterStringParaInt(vetor_argumentos[4]);
+
     if (deslocamento < 0 || deslocamento > 25) {
         fprintf(stderr, "cesar: %d: deslocamento deve ser entre 0 e 25\n", deslocamento);
         return EXIT_FAILURE;
@@ -33,7 +33,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
 
     if (strcmp(tipo, "-t") == 0) {
         int i = 0;
-        
+
         while (conteudo[i] != '\0') {
             conteudo[i] = deslocar(conteudo[i], deslocamento);
             i++;
@@ -118,6 +118,8 @@ static int converterStringParaInt(char *numero) {
     int numero_convertido = 0;
 
     while (numero[i] != '\0') {
+        if (i == 0 && numero[i] == '-') i++;
+
         const int digito = numero[i];
         
         if (digito < '0' || digito > '9') {
@@ -130,6 +132,8 @@ static int converterStringParaInt(char *numero) {
 
         i++;
     }
+    
+    if (numero[0] == '-') numero_convertido = numero_convertido * -1;
 
     return numero_convertido;
 }
