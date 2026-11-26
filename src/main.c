@@ -13,6 +13,11 @@ int main() {
         char comando[MAX_SIZE];
 
         fgets(comando, MAX_SIZE, stdin);
+        
+        if (comando == NULL) {
+            printf("Ocorreu um erro inesperado. Favor tente novamente.\n");
+            continue;
+        }
 
         if (comando[0] == '\n') {
             continue; // Ignora Enters puros, evitando Segmentation Fault com fget vazio
