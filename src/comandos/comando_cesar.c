@@ -3,6 +3,8 @@
 #include <string.h>
 #include <errno.h>
 
+#define TAMANHO_MAX_NOME_ARQUIVO 256
+
 static int deslocar(char caractere, int deslocamento);
 static int converterStringParaInt(char *numero, int *resultado);
 
@@ -51,12 +53,12 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
         }
 
         int caractere;
-        char *nome_arquivo_destino;
+        char nome_arquivo_destino[TAMANHO_MAX_NOME_ARQUIVO];
         
         if (strcmp(modo, "cifrar") == 0) {
-            nome_arquivo_destino = strcat(conteudo, ".cifrado");
+            snprintf(nome_arquivo_destino, TAMANHO_MAX_NOME_ARQUIVO, "%s.cifrado", conteudo);
         } else {
-            nome_arquivo_destino = strcat(conteudo, ".decifrado");
+            snprintf(nome_arquivo_destino, TAMANHO_MAX_NOME_ARQUIVO, "%s.decifrado", conteudo);
         }
 
         FILE *arquivo_destino = fopen(nome_arquivo_destino, "w");
