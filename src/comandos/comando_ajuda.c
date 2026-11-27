@@ -29,7 +29,7 @@ int ajuda(int contagem_argumentos, char *vetor_argumentos[]) {
     if (strcmp(comando, "ajuda") == 0) {
         printf("Lista todos os comandos.\n");
         printf("Sintaxe: ajuda [comando]\n");
-        printf("Exmplo: ajuda cat\n");
+        printf("Exemplo: ajuda cat\n");
 
     } else if (strcmp(comando, "sair") == 0) {
         printf("Encerra o terminal.\n");
