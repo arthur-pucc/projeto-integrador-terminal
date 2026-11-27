@@ -20,6 +20,13 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
     char *conteudo = vetor_argumentos[3]; // Traz o texto a ser transformado ou o nome do arquivo para transformar
     int deslocamento;
 
+    /* Verifica o tamanho do deslocamento; máximo que pode chegar é 3 (-25 ou +25); -100 ou 1000, por exemplo, lança erro
+        Ajuda no tratamento do int overflow que converterStringParaInt() tem. */
+    if (vetor_argumentos[4][3] != '\0') {
+        fprintf(stderr, "cesar: %d: deslocamento deve estar entre 0 e 25\n", deslocamento);
+        return EXIT_FAILURE;
+    }
+
     if (converterStringParaInt(vetor_argumentos[4], &deslocamento) == EXIT_FAILURE) return EXIT_FAILURE;
 
     if (deslocamento < 0 || deslocamento > 25) {
@@ -46,6 +53,13 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
 
         printf("%s\n", conteudo);
     } else if (strcmp(tipo, "-f") == 0) { // Aqui, 'conteudo' é o NOME do arquivo que será lido.
+        if ((strlen(conteudo) + 8 > TAMANHO_MAX_NOME_ARQUIVO && strcmp(modo, "cifrar") == 0)
+            || (strlen(conteudo) + 10 > TAMANHO_MAX_NOME_ARQUIVO && strcmp(modo, "decifrar") == 0)
+        ) {
+            fprintf(stderr, "cesar: %s: nome para arquivo muito longo\n", conteudo);
+            return EXIT_FAILURE;
+        }
+
         FILE *arquivo_origem = fopen(conteudo, "r");
 
         if (arquivo_origem == NULL) {
@@ -55,7 +69,7 @@ int cesar(int contagem_argumentos, char *vetor_argumentos[]) {
 
         int caractere;
         char nome_arquivo_destino[TAMANHO_MAX_NOME_ARQUIVO];
-        
+
         if (strcmp(modo, "cifrar") == 0) {
             snprintf(nome_arquivo_destino, TAMANHO_MAX_NOME_ARQUIVO, "%s.cifrado", conteudo);
         } else {
@@ -121,19 +135,21 @@ static int deslocar(char caractere, int deslocamento) {
 static int converterStringParaInt(char *numero, int *resultado) {
     int i = 0;
     int numero_convertido = 0;
+    
+    if (numero[0] == '\0') {
+        fprintf(stderr, "cesar: deslocamento esta vazio\n");
+        return EXIT_FAILURE;
+    }
 
     while (numero[i] != '\0') {
-        if (i == 0 && (numero[i] == '-' || numero[i] == '+')) i++;
-
         const int digito = numero[i];
         
         if (digito < '0' || digito > '9') {
             fprintf(stderr, "cesar: %s: deslocamento nao e um numero valido\n", numero);
             return EXIT_FAILURE;
         }
-
-        numero_convertido = numero_convertido * 10;
-        numero_convertido = numero_convertido + digito - '0';
+        
+        numero_convertido = (numero_convertido * 10) + digito - '0';
 
         i++;
     }
