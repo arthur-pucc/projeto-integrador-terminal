@@ -77,7 +77,22 @@ A partir de agora, o terminal escuta os comandos digitados pelo usuário até o 
 3. `main.c` chama a funcao `escolherComando()`, o qual compara o primeiro termo (`vetor_argumentos[0]`) com o nome de cada comando, apontado e chamando a função correspondente, passando `(contagem_argumentos, vetor_argumentos)`.
 4. Cada comando valida os próprios argumentos, executa a ação e devolve `EXIT_SUCCESS` ou `EXIT_FAILURE`.
 
+## Sintaxe da linha de comando
 
+* Os termos são separados por espaços. Espaços extras no início, no meio ou no fim da linha são ignorados.
+* Um texto com espaços deve ficar entre aspas duplas (`"ola mundo"`) ou simples (`'ola mundo'`). As aspas não fazem parte do texto.
+* Dentro de um texto entre aspas não é possível usar o mesmo tipo de aspa. Para escrever `"`, use aspas simples em volta, e vice-versa.
+* Cada linha aceita no máximo 20 termos, contando o próprio comando, e até 4095 caracteres.
+* Linhas vazias são ignoradas.
+
+| Situação | Mensagem |
+| --- | --- |
+| Comando inexistente | `xyz: comando desconhecido` |
+| Aspas duplas não fechadas | `Aspas duplas nao fechadas` |
+| Aspas simples não fechadas | `Aspas simples nao fechadas` |
+| Mais de 20 termos na linha | `Argumentos demais (maximo de 20 por linha)` |
+
+Nesses casos a linha é ignorada e o terminal continua aberto.
 
 ## Comandos
 
@@ -98,8 +113,8 @@ Exemplo: sair
 ```
 
 #### Erros:
-* Comando fora do escopo retorna **Comando desconhecido: `<comando>`**.
-* Argumentos excessivos, por exemplo, mais de um comando indicado, retorna **Quantidade de argumentos excedida**.
+* Comando inexistente retorna `ajuda: <comando>: comando desconhecido`.
+* Mais de um comando informado retorna `ajuda: informe apenas um comando`.
 
 
 ### **`sair`**
@@ -127,7 +142,7 @@ ola mundo
 ```
 
 #### Erros:
-* Falta de texto retorna **Sem texto. Digite algo depois do comando.**
+* Falta de texto retorna **ec: informe ao menos um texto**
 
 
 ### **`criar`**
@@ -145,9 +160,11 @@ Arquivo 'meu_arquivo.txt' criado!
 ```
 
 #### Erros:
-* Texto informado que **possui** espaço e **não** está entre aspas retorna **Quantidade de argumentos excedida**.
-* Nome de arquivo contendo `/` ou `\` retorna **Nome do arquivo invalido. Nao deve conter '/' ou '\'.**
-* Falha inesperada ao criar arquivo retorna **Erro ao criar arquivo '<nome_arquivo>'.**
+* Texto com espaços e sem aspas retorna `criar: quantidade de argumentos excedida`.
+* Falta do nome ou do texto, ou nome vazio (`""`), retorna `criar: informe o nome do arquivo e o texto`.
+* Nome contendo `/` ou `\` retorna `criar: <arquivo>: nome do arquivo nao deve conter '/' ou '\'`.
+* Arquivo que não pode ser criado retorna `criar: <arquivo>: nao foi possivel criar o arquivo: <motivo>`.
+* Falha ao gravar o texto retorna `criar: <arquivo>: nao foi possivel gravar o arquivo: <motivo>`.
 
 
 ### **`cat`**
@@ -165,8 +182,10 @@ Olá mundo! Esse é meu novo arquivo!
 ```
 
 #### Erros:
-* Arquivo inexistente retorna **Arquivo nao encontrado**.
-* Falta de indicação de arquivo retorna **Por favor, informe o nome de um arquivo.**
+* Falta de indicação de arquivo retorna `cat: informe pelo menos um arquivo`.
+* Arquivo inexistente retorna `cat: <arquivo>: arquivo nao encontrado`.
+* Arquivo que não pode ser aberto (por exemplo, sem permissão) retorna `cat: <arquivo>: nao foi possivel abrir o arquivo: <motivo>`.
+* Arquivo que não pode ser lido (por exemplo, uma pasta) retorna `cat: <arquivo>: nao foi possivel ler o arquivo: <motivo>`.
 
 
 ### **`cesar cifrar`**
@@ -190,12 +209,16 @@ Arquivo meu_arquivo.txt.cifrado criado!
 ```
 
 #### Erros:
-* Quantidade de argumentos não segue estrutura já descrita retorna **Quantidade de argumentos invalida.**
-* Deslocamento não está entre 0 e 25 retorna **Deslocamento aplicado invalido.**
-* Deslocamento indicado não é um número válido retorna **Parametro nao e um numero valido**.
-* Tipo diferente de `-t` e `-f` retorna **Argumento invalido.**
-* Arquivo de entrada (tipo `-f`) inexistente retorna **Erro ao tentar ler arquivo**.
-* Falha inesperada ao criar o arquivo `.cifrado` retorna **Erro ao tentar criar arquivo cifrado**.
+* Quantidade de termos diferente de cinco retorna `cesar: quantidade de argumentos invalida`.
+* Modo diferente de `cifrar` e `decifrar` retorna `cesar: <modo>: modo invalido`.
+* Tipo diferente de `-t` e `-f` retorna `cesar: <tipo>: argumento invalido`.
+* Deslocamento fora de 0 a 25 retorna `cesar: <deslocamento>: deslocamento deve estar entre 0 e 25`.
+* Deslocamento que não é um número (inclusive negativo) retorna `cesar: <deslocamento>: deslocamento nao e um numero valido`.
+* Deslocamento vazio (`""`) retorna `cesar: deslocamento esta vazio`.
+* Arquivo de entrada (tipo `-f`) inexistente retorna `cesar: <arquivo>: arquivo nao encontrado`.
+* Nome do arquivo de saída com mais de 255 caracteres retorna `cesar: <arquivo>: nome para arquivo muito longo`.
+* Falha ao abrir ou ler o arquivo de entrada retorna `cesar: <arquivo>: nao foi possivel abrir o arquivo: <motivo>` ou `nao foi possivel ler o arquivo: <motivo>`.
+* Falha ao criar ou gravar o arquivo de saída retorna `cesar: <arquivo>.cifrado: nao foi possivel criar o arquivo: <motivo>` ou `nao foi possivel gravar o arquivo: <motivo>`.
 
 
 ### **`cesar decifrar`**
@@ -219,9 +242,13 @@ Arquivo meu_arquivo.txt.cifrado.decifrado criado!
 ```
 
 #### Erros:
-* Quantidade de argumentos não segue estrutura já descrita retorna **Quantidade de argumentos invalida.**
-* Deslocamento não está entre 0 e 25 retorna **Deslocamento aplicado invalido.**
-* Deslocamento indicado não é um número válido retorna **Parametro nao e um numero valido**.
-* Tipo diferente de `-t` e `-f` retorna **Argumento invalido.**
-* Arquivo de entrada (tipo `-f`) inexistente retorna **Erro ao tentar ler arquivo**.
-* Falha inesperada ao criar o arquivo `.decifrado` retorna **Erro ao tentar criar arquivo decifrado**.
+* Quantidade de termos diferente de cinco retorna `cesar: quantidade de argumentos invalida`.
+* Modo diferente de `cifrar` e `decifrar` retorna `cesar: <modo>: modo invalido`.
+* Tipo diferente de `-t` e `-f` retorna `cesar: <tipo>: argumento invalido`.
+* Deslocamento fora de 0 a 25 retorna `cesar: <deslocamento>: deslocamento deve estar entre 0 e 25`.
+* Deslocamento que não é um número (inclusive negativo) retorna `cesar: <deslocamento>: deslocamento nao e um numero valido`.
+* Deslocamento vazio (`""`) retorna `cesar: deslocamento esta vazio`.
+* Arquivo de entrada (tipo `-f`) inexistente retorna `cesar: <arquivo>: arquivo nao encontrado`.
+* Nome do arquivo de saída com mais de 255 caracteres retorna `cesar: <arquivo>: nome para arquivo muito longo`.
+* Falha ao abrir ou ler o arquivo de entrada retorna `cesar: <arquivo>: nao foi possivel abrir o arquivo: <motivo>` ou `nao foi possivel ler o arquivo: <motivo>`.
+* Falha ao criar ou gravar o arquivo de saída retorna `cesar: <arquivo>.decifrado: nao foi possivel criar o arquivo: <motivo>` ou `nao foi possivel gravar o arquivo: <motivo>`.
